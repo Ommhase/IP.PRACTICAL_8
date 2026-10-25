@@ -1,69 +1,204 @@
-# --- Q1: Creating a Dictionary ---
-student = {"name": "Asha", "age": 18, "marks": 92}
-print("Q1 Dictionary:", student, "| Type:", type(student))
-
-# --- Q2: Accessing Values (Indexing) ---
-print("Q2 Name:", student["name"])
-try:
-    print(student["grade"])
-except KeyError:
-    print("Q2 KeyError: 'grade' key does not exist.")
-
-# --- Q3: Using get() Method ---
-print("Q3 Safe Access with get():", student.get("grade", "Not Assigned"))
-
-# --- Q4: Adding and Updating Elements ---
-student["city"] = "Mumbai"
-student["marks"] = 95
-print("Q4 Updated Student:", student)
-
-# --- Q5: Removing Elements ---
-removed_age = student.pop("age")
-del student["city"]
-print(f"Q5 After removing age ({removed_age}) and city:", student)
-
-# --- Q6: Iterating Through Dictionary ---
-print("Q6 Iteration ->", end=" ")
-for k, v in student.items():
-    print(f"{k}: {v}", end=" | ")
-print()
-
-# --- Q7: Dictionary Methods - keys(), values(), items() ---
-print("Q7 Keys List:", list(student.keys()))
-print("Q7 Values List:", list(student.values()))
-print("Q7 Items List:", list(student.items()))
-
-# --- Q8: Counting Frequency using Dictionary ---
-text = "hello"
-freq = {}
-for char in text:
-    freq[char] = freq.get(char, 0) + 1
-print(f"Q8 Character Frequency in '{text}':", freq)
-
-# --- Q9: Nested Dictionary ---
-records = {
-    "S1": {"name": "Ravi", "score": 85},
-    "S2": {"name": "Neha", "score": 90}
+# ==========================================================
+# Question 1: Creating a Dictionary
+# ==========================================================
+print("--- Question 1 ---")
+# Creating a dictionary with student details
+student = {
+    "Name": "Rahul",
+    "Age": 20,
+    "Marks": 85
 }
-records["S1"]["score"] = 88
-print("Q9 Nested Access & Update (S1 Score):", records["S1"]["score"])
 
-# --- Q10: Dictionary Merging ---
-d1 = {"a": 1, "b": 2}
-d2 = {"b": 20, "c": 30}
-d1.update(d2)
-print("Q10 Merged Dictionary (b overwritten):", d1)
+print("Student Dictionary:", student)
+print("Type:", type(student))
 
-# --- Q11: Sorting Dictionary Data ---
-scores = {"Charlie": 85, "Alice": 92, "Bob": 78}
-sorted_by_key = dict(sorted(scores.items()))
-sorted_by_val = dict(sorted(scores.items(), key=lambda item: item[1]))
-print("Q11 Sorted by Keys:", sorted_by_key)
-print("Q11 Sorted by Values:", sorted_by_val)
 
-# --- Q12: Real-World Scenario - Inventory System ---
-inventory = {"Laptop": 10, "Mouse": 25}
-inventory["Keyboard"] = 15     # Add product
-inventory["Laptop"] += 5       # Update stock
-inventory.pop("Mouse")         # Remove product
-print("Q12 Final Inventory:", inventory)
+# ==========================================================
+# Question 2: Accessing Values (Indexing)
+# ==========================================================
+print("\n--- Question 2 ---")
+# Accessing existing keys
+print("Name :", student["Name"])
+print("Marks:", student["Marks"])
+
+# Accessing a non-existent key using direct indexing (raises KeyError)
+try:
+    print(student["city"])
+except KeyError as e:
+    print("Direct Indexing Error: Key", e, "not found in dictionary.")
+
+
+# ==========================================================
+# Question 3: Using get() Method
+# ==========================================================
+print("\n--- Question 3 ---")
+# Accessing existing key safely
+print("Name with get():", student.get("Name"))
+
+# Accessing non-existent key returns None by default without crashing
+print("City with get():", student.get("city"))
+
+# Providing a custom default fallback value
+print("City with fallback:", student.get("city", "Not Available"))
+
+
+# ==========================================================
+# Question 4: Adding and Updating Elements
+# ==========================================================
+print("\n--- Question 4 ---")
+# Adding a new key-value pair
+student["City"] = "Pune"
+
+# Updating an existing key-value pair
+student["Age"] = 21
+student["Marks"] = 90
+
+print("Updated Dictionary:", student)
+
+
+# ==========================================================
+# Question 5: Removing Elements
+# ==========================================================
+print("\n--- Question 5 ---")
+# Remove using pop() (returns removed value)
+removed_marks = student.pop("Marks")
+print(f"Popped Marks ({removed_marks}):", student)
+
+# Remove using del keyword
+del student["Age"]
+print("After del student['Age']:", student)
+
+# Handling deletion/pop when key does not exist
+removed_safe = student.pop("NonExistentKey", "Key not present")
+print("Safe pop on non-existent key:", removed_safe)
+
+
+# ==========================================================
+# Question 6: Iterating Through Dictionary
+# ==========================================================
+print("\n--- Question 6 ---")
+# Re-populate dictionary for demonstration
+demo_dict = {"Name": "Rahul", "Age": 21, "City": "Pune"}
+
+print("Keys:")
+for key in demo_dict:
+    print(f"- {key}")
+
+print("\nValues:")
+for value in demo_dict.values():
+    print(f"- {value}")
+
+print("\nKey-Value Pairs:")
+for key, value in demo_dict.items():
+    print(f"{key}: {value}")
+
+
+# ==========================================================
+# Question 7: Dictionary Methods - keys(), values(), items()
+# ==========================================================
+print("\n--- Question 7 ---")
+keys_list = list(demo_dict.keys())
+values_list = list(demo_dict.values())
+items_list = list(demo_dict.items())
+
+print("Keys as list  :", keys_list)
+print("Values as list:", values_list)
+print("Items as list :", items_list)
+
+
+# ==========================================================
+# Question 8: Counting Character Frequency
+# ==========================================================
+print("\n--- Question 8 ---")
+text = input("Enter a string: ")
+frequency = {}
+
+for ch in text:
+    if ch in frequency:
+        frequency[ch] += 1
+    else:
+        frequency[ch] = 1
+
+print("Character Frequency:", frequency)
+
+
+# ==========================================================
+# Question 9: Nested Dictionary
+# ==========================================================
+print("\n--- Question 9 ---")
+students = {
+    "101": {
+        "Name": "Rahul",
+        "Marks": 85
+    },
+    "102": {
+        "Name": "Priya",
+        "Marks": 92
+    }
+}
+
+# Accessing nested values
+print("Student 101 Name :", students["101"]["Name"])
+
+# Modifying nested data
+students["102"]["Marks"] = 95
+print("Student 102 updated marks:", students["102"]["Marks"])
+print("Complete Nested Dictionary:\n", students)
+
+
+# ==========================================================
+# Question 10: Dictionary Merging (update)
+# ==========================================================
+print("\n--- Question 10 ---")
+dict1 = {"A": 10, "B": 20}
+dict2 = {"B": 50, "C": 30}
+
+# update() merges dict2 into dict1; matching keys (e.g., 'B') are overwritten
+dict1.update(dict2)
+print("Merged Dictionary (with overwrite):", dict1)
+
+
+# ==========================================================
+# Question 11: Sorting Dictionary Data
+# ==========================================================
+print("\n--- Question 11 ---")
+student_scores = {
+    "Rahul": 85,
+    "Priya": 92,
+    "Amit": 78
+}
+
+# Sort by Keys (Alphabetical)
+print("Sorted by Keys:")
+for key in sorted(student_scores):
+    print(f"  {key}: {student_scores[key]}")
+
+# Sort by Values (Marks in ascending order)
+print("\nSorted by Values:")
+for key, value in sorted(student_scores.items(), key=lambda item: item[1]):
+    print(f"  {key}: {value}")
+
+
+# ==========================================================
+# Question 12: Real-World Scenario - Inventory System
+# ==========================================================
+print("\n--- Question 12 ---")
+inventory = {
+    "laptop": 10,
+    "mouse": 25,
+    "keyboard": 15
+}
+
+# 1. Add new product
+inventory["monitor"] = 8
+
+# 2. Update stock of existing product
+inventory["mouse"] = 30
+
+# 3. Remove product
+inventory.pop("keyboard", None)
+
+# 4. Display final inventory summary
+print("Final Inventory Summary:")
+for product, quantity in inventory.items():
+    print(f"  {product.capitalize()}: {quantity}")
