@@ -1,0 +1,69 @@
+# --- Q1: Creating a Dictionary ---
+student = {"name": "Asha", "age": 18, "marks": 92}
+print("Q1 Dictionary:", student, "| Type:", type(student))
+
+# --- Q2: Accessing Values (Indexing) ---
+print("Q2 Name:", student["name"])
+try:
+    print(student["grade"])
+except KeyError:
+    print("Q2 KeyError: 'grade' key does not exist.")
+
+# --- Q3: Using get() Method ---
+print("Q3 Safe Access with get():", student.get("grade", "Not Assigned"))
+
+# --- Q4: Adding and Updating Elements ---
+student["city"] = "Mumbai"
+student["marks"] = 95
+print("Q4 Updated Student:", student)
+
+# --- Q5: Removing Elements ---
+removed_age = student.pop("age")
+del student["city"]
+print(f"Q5 After removing age ({removed_age}) and city:", student)
+
+# --- Q6: Iterating Through Dictionary ---
+print("Q6 Iteration ->", end=" ")
+for k, v in student.items():
+    print(f"{k}: {v}", end=" | ")
+print()
+
+# --- Q7: Dictionary Methods - keys(), values(), items() ---
+print("Q7 Keys List:", list(student.keys()))
+print("Q7 Values List:", list(student.values()))
+print("Q7 Items List:", list(student.items()))
+
+# --- Q8: Counting Frequency using Dictionary ---
+text = "hello"
+freq = {}
+for char in text:
+    freq[char] = freq.get(char, 0) + 1
+print(f"Q8 Character Frequency in '{text}':", freq)
+
+# --- Q9: Nested Dictionary ---
+records = {
+    "S1": {"name": "Ravi", "score": 85},
+    "S2": {"name": "Neha", "score": 90}
+}
+records["S1"]["score"] = 88
+print("Q9 Nested Access & Update (S1 Score):", records["S1"]["score"])
+
+# --- Q10: Dictionary Merging ---
+d1 = {"a": 1, "b": 2}
+d2 = {"b": 20, "c": 30}
+d1.update(d2)
+print("Q10 Merged Dictionary (b overwritten):", d1)
+
+# --- Q11: Sorting Dictionary Data ---
+scores = {"Charlie": 85, "Alice": 92, "Bob": 78}
+sorted_by_key = dict(sorted(scores.items()))
+sorted_by_val = dict(sorted(scores.items(), key=lambda item: item[1]))
+print("Q11 Sorted by Keys:", sorted_by_key)
+print("Q11 Sorted by Values:", sorted_by_val)
+
+# --- Q12: Real-World Scenario - Inventory System ---
+inventory = {"Laptop": 10, "Mouse": 25}
+inventory["Keyboard"] = 15     # Add product
+inventory["Laptop"] += 5       # Update stock
+inventory.pop("Mouse")         # Remove product
+print("Q12 Final Inventory:", inventory)
