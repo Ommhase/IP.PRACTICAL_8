@@ -1,204 +1,91 @@
-# ==========================================================
-# Question 1: Creating a Dictionary
-# ==========================================================
-print("--- Question 1 ---")
-# Creating a dictionary with student details
-student = {
-    "Name": "Rahul",
-    "Age": 20,
-    "Marks": 85
+<?php
+// ==========================================================
+// PRACTICAL 8: PHP SESSIONS, COOKIES AND FILTERS
+// ==========================================================
+
+// ==========================================================
+// Question 1: Sessions
+// ==========================================================
+session_start();
+$_SESSION['username'] = 'Student';
+echo 'Welcome ' . htmlspecialchars($_SESSION['username']) . '<br>';
+
+
+// ==========================================================
+// Question 2: Cookies
+// ==========================================================
+setcookie('visitor', 'Student', time() + 3600, '/');
+echo 'Cookie has been set. Refresh the page to read it.<br>';
+
+
+// ==========================================================
+// Question 3: Validate Input with Filters
+// ==========================================================
+$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+if ($email) {
+    echo 'Valid email: ' . htmlspecialchars($email);
+} else {
+    echo 'Please enter a valid email.';
 }
+?>
 
-print("Student Dictionary:", student)
-print("Type:", type(student))
+==========================================================
+  Whole Combined Code (htdocs/webprac/practical8.php)
+=========================================================
+<?php
+session_start();
+$notice = '';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $name = trim($_POST['name'] ?? '');
 
-# ==========================================================
-# Question 2: Accessing Values (Indexing)
-# ==========================================================
-print("\n--- Question 2 ---")
-# Accessing existing keys
-print("Name :", student["Name"])
-print("Marks:", student["Marks"])
-
-# Accessing a non-existent key using direct indexing (raises KeyError)
-try:
-    print(student["city"])
-except KeyError as e:
-    print("Direct Indexing Error: Key", e, "not found in dictionary.")
-
-
-# ==========================================================
-# Question 3: Using get() Method
-# ==========================================================
-print("\n--- Question 3 ---")
-# Accessing existing key safely
-print("Name with get():", student.get("Name"))
-
-# Accessing non-existent key returns None by default without crashing
-print("City with get():", student.get("city"))
-
-# Providing a custom default fallback value
-print("City with fallback:", student.get("city", "Not Available"))
-
-
-# ==========================================================
-# Question 4: Adding and Updating Elements
-# ==========================================================
-print("\n--- Question 4 ---")
-# Adding a new key-value pair
-student["City"] = "Pune"
-
-# Updating an existing key-value pair
-student["Age"] = 21
-student["Marks"] = 90
-
-print("Updated Dictionary:", student)
-
-
-# ==========================================================
-# Question 5: Removing Elements
-# ==========================================================
-print("\n--- Question 5 ---")
-# Remove using pop() (returns removed value)
-removed_marks = student.pop("Marks")
-print(f"Popped Marks ({removed_marks}):", student)
-
-# Remove using del keyword
-del student["Age"]
-print("After del student['Age']:", student)
-
-# Handling deletion/pop when key does not exist
-removed_safe = student.pop("NonExistentKey", "Key not present")
-print("Safe pop on non-existent key:", removed_safe)
-
-
-# ==========================================================
-# Question 6: Iterating Through Dictionary
-# ==========================================================
-print("\n--- Question 6 ---")
-# Re-populate dictionary for demonstration
-demo_dict = {"Name": "Rahul", "Age": 21, "City": "Pune"}
-
-print("Keys:")
-for key in demo_dict:
-    print(f"- {key}")
-
-print("\nValues:")
-for value in demo_dict.values():
-    print(f"- {value}")
-
-print("\nKey-Value Pairs:")
-for key, value in demo_dict.items():
-    print(f"{key}: {value}")
-
-
-# ==========================================================
-# Question 7: Dictionary Methods - keys(), values(), items()
-# ==========================================================
-print("\n--- Question 7 ---")
-keys_list = list(demo_dict.keys())
-values_list = list(demo_dict.values())
-items_list = list(demo_dict.items())
-
-print("Keys as list  :", keys_list)
-print("Values as list:", values_list)
-print("Items as list :", items_list)
-
-
-# ==========================================================
-# Question 8: Counting Character Frequency
-# ==========================================================
-print("\n--- Question 8 ---")
-text = input("Enter a string: ")
-frequency = {}
-
-for ch in text:
-    if ch in frequency:
-        frequency[ch] += 1
-    else:
-        frequency[ch] = 1
-
-print("Character Frequency:", frequency)
-
-
-# ==========================================================
-# Question 9: Nested Dictionary
-# ==========================================================
-print("\n--- Question 9 ---")
-students = {
-    "101": {
-        "Name": "Rahul",
-        "Marks": 85
-    },
-    "102": {
-        "Name": "Priya",
-        "Marks": 92
+    if ($name === '') {
+        $notice = 'Name is required.';
+    } elseif (!$email) {
+        $notice = 'Please enter a valid email address.';
+    } else {
+        $_SESSION['username'] = $name;
+        setcookie('visitor', $name, time() + 3600, '/');
+        $notice = 'Input accepted. Session and cookie updated.';
     }
 }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PHP Sessions Cookies Filters</title>
+</head>
+<body>
+    <h1>Session, Cookie and Filter Demo</h1>
 
-# Accessing nested values
-print("Student 101 Name :", students["101"]["Name"])
+    <?php if ($notice): ?>
+        <p style="color: blue;"><strong><?php echo htmlspecialchars($notice); ?></strong></p>
+    <?php endif; ?>
 
-# Modifying nested data
-students["102"]["Marks"] = 95
-print("Student 102 updated marks:", students["102"]["Marks"])
-print("Complete Nested Dictionary:\n", students)
+    <form method="post" action="">
+        <label>Name: <input type="text" name="name" required></label><br><br>
+        <label>Email: <input type="email" name="email" required></label><br><br>
+        <button type="submit">Submit</button>
+    </form>
 
+    <h2>Current Session</h2>
+    <p>
+        <?php 
+        echo isset($_SESSION['username']) 
+            ? 'Logged in as: ' . htmlspecialchars($_SESSION['username']) 
+            : 'No session name yet.'; 
+        ?>
+    </p>
 
-# ==========================================================
-# Question 10: Dictionary Merging (update)
-# ==========================================================
-print("\n--- Question 10 ---")
-dict1 = {"A": 10, "B": 20}
-dict2 = {"B": 50, "C": 30}
-
-# update() merges dict2 into dict1; matching keys (e.g., 'B') are overwritten
-dict1.update(dict2)
-print("Merged Dictionary (with overwrite):", dict1)
-
-
-# ==========================================================
-# Question 11: Sorting Dictionary Data
-# ==========================================================
-print("\n--- Question 11 ---")
-student_scores = {
-    "Rahul": 85,
-    "Priya": 92,
-    "Amit": 78
-}
-
-# Sort by Keys (Alphabetical)
-print("Sorted by Keys:")
-for key in sorted(student_scores):
-    print(f"  {key}: {student_scores[key]}")
-
-# Sort by Values (Marks in ascending order)
-print("\nSorted by Values:")
-for key, value in sorted(student_scores.items(), key=lambda item: item[1]):
-    print(f"  {key}: {value}")
-
-
-# ==========================================================
-# Question 12: Real-World Scenario - Inventory System
-# ==========================================================
-print("\n--- Question 12 ---")
-inventory = {
-    "laptop": 10,
-    "mouse": 25,
-    "keyboard": 15
-}
-
-# 1. Add new product
-inventory["monitor"] = 8
-
-# 2. Update stock of existing product
-inventory["mouse"] = 30
-
-# 3. Remove product
-inventory.pop("keyboard", None)
-
-# 4. Display final inventory summary
-print("Final Inventory Summary:")
-for product, quantity in inventory.items():
-    print(f"  {product.capitalize()}: {quantity}")
+    <h2>Cookie</h2>
+    <p>
+        <?php 
+        echo isset($_COOKIE['visitor']) 
+            ? 'Cookie visitor: ' . htmlspecialchars($_COOKIE['visitor']) 
+            : 'Cookie will be available after the next request / page refresh.'; 
+        ?>
+    </p>
+</body>
+</html>
